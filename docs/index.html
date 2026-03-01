@@ -572,13 +572,15 @@
     <div class="doc-section" id="quickstart">
       <h2>Quick Start</h2>
 
-      <h3>1. Clone and install</h3>
-      <pre>git clone https://github.com/yzzyonline/cascade
+      <h3>1. Fork and clone</h3>
+      <p>Fork the repo on GitHub so you have your own copy to modify and deploy, then clone your fork:</p>
+      <pre>git clone https://github.com/YOUR_USERNAME/cascade
 cd cascade
 npm install</pre>
 
       <h3>2. Set up environment variables</h3>
       <p>Copy <code>.env.example</code> to <code>.env</code> and fill in your API keys:</p>
+      <pre>cp .env.example .env</pre>
       <pre>MY_APP_SECRET=your-secret-here
 GEMINI_KEY=your-gemini-key
 GROQ_KEY=your-groq-key
@@ -590,7 +592,7 @@ CEREBRAS_KEY=your-cerebras-key</pre>
 # Middleware listening on port 10000 at 0.0.0.0</pre>
 
       <h3>4. Deploy to Render (free)</h3>
-      <p>Push to GitHub and create a new Web Service on Render. Set the start command to <code>npm start</code>. Add your environment variables in the Render dashboard. Your endpoint will be at <code>https://your-service.onrender.com</code>.</p>
+      <p>Push your fork to GitHub and create a new Web Service on Render pointing at your fork. Set the start command to <code>npm start</code>. Add your environment variables in the Render dashboard. Your endpoint will be at <code>https://your-service.onrender.com</code>.</p>
 
       <div class="callout">
         <strong>Cold starts:</strong> Render's free tier spins down after 15 minutes of inactivity. The first request after idle may take 30–60 seconds. Call <code>/wake</code> to warm the server before your first prompt.
@@ -749,7 +751,7 @@ GROQ_KEY=keyOne|keyTwo</pre>
     <!-- Origin Whitelist -->
     <div class="doc-section" id="origin">
       <h2>Origin Whitelist</h2>
-      <p>The <code>ALLOWED_ORIGINS</code> array at the top of <code>script.js</code> controls which origins can call <code>/ask-ai</code>. Browser-based clients (including Godot Web Exports) always send a real <code>Origin</code> header that cannot be spoofed.</p>
+      <p>The <code>ALLOWED_ORIGINS</code> array at the top of <code>cascade.js</code> controls which origins can call <code>/ask-ai</code>. Browser-based clients (including Godot Web Exports) always send a real <code>Origin</code> header that cannot be spoofed.</p>
 
       <pre>// Allow everyone (dev / testing)
 const ALLOWED_ORIGINS = [];
@@ -808,7 +810,7 @@ const ALLOWED_ORIGINS = [
     <!-- In action -->
     <div class="doc-section" id="in-action">
       <h2>See it in Action</h2>
-      <p>This assistant is built on top of Cascade — a simple chat interface that uses <code>POST /ask-ai</code> at difficulty 0.8 to answer questions about yzzy.online products. It demonstrates how easy it is to add AI to any browser app with a single fetch call.</p>
+      <p>This assistant is built on top of Cascade — a simple chat interface that uses <code>POST /ask-ai</code> at difficulty 0.5 to answer questions about yzzy.online products. It demonstrates how easy it is to add AI to any browser app with a single fetch call.</p>
 
       <div class="demo-card">
         <div class="demo-card-title">yzzy.online AI Assistant</div>
@@ -822,7 +824,7 @@ const res = await fetch("https://your-cascade.onrender.com/ask-ai", {
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
     secret: SECRET,
-    difficulty: 0.8,
+    difficulty: 0.5,
     prompt: SYSTEM_PROMPT + "\n\nUser: " + userMessage
   })
 });

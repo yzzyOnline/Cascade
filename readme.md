@@ -21,17 +21,23 @@ A `difficulty` float (0.0–1.0) maps to a starting position in the MODELS array
 
 ## Quick Start
 
-### 1. Clone and install
+### 1. Fork and clone
+
+Fork the repo on GitHub so you have your own copy to modify and deploy, then clone your fork:
 
 ```bash
-git clone https://github.com/yzzyonline/cascade
+git clone https://github.com/YOUR_USERNAME/cascade
 cd cascade
 npm install
 ```
 
 ### 2. Configure environment variables
 
-Copy `.env.example` to `.env`:
+Copy `.env.example` to `.env` and fill in your API keys:
+
+```bash
+cp .env.example .env
+```
 
 ```env
 MY_APP_SECRET=your-secret-here
@@ -50,7 +56,7 @@ npm start
 
 ### 4. Deploy to Render (free)
 
-Push to GitHub, create a new Web Service on Render, set the start command to `npm start`, and add your env vars in the dashboard.
+Push your fork to GitHub, create a new Web Service on Render pointing at your fork, set the start command to `npm start`, and add your env vars in the dashboard.
 
 ---
 
@@ -99,7 +105,7 @@ Returns uptime, model count, key pool sizes, and config.
 
 ### Model Array
 
-Edit the `MODELS` array in `script.js` to add, remove, or reorder models. The cascade adapts automatically:
+Edit the `MODELS` array in `cascade.js` to add, remove, or reorder models. The cascade adapts automatically:
 
 ```js
 const MODELS = [
@@ -122,7 +128,7 @@ On a 429 or auth error, Cascade rotates to the next key before marking the model
 
 ### Origin Whitelist
 
-Edit `ALLOWED_ORIGINS` in `script.js`. Empty array = accept from everywhere:
+Edit `ALLOWED_ORIGINS` in `cascade.js`. Empty array = accept from everywhere:
 
 ```js
 const ALLOWED_ORIGINS = [];                          // open
