@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cascade — Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #050e12;
+    --bg2:       #071520;
+    --surface:   #0d2235;
+    --border:    #112840;
+    --cyan:      #4dd9c0;
+    --cyan-dim:  #1a6e5e;
+    --cyan-glow: rgba(77, 217, 192, 0.1);
+    --text:      #c8dde8;
+    --muted:     #4a7a8a;
+    --dim:       #1e4a5e;
+    --mono:      'DM Mono', monospace;
+    --serif:     'Instrument Serif', serif;
+    --sidebar:   260px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.75;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 80%, rgba(13,60,80,0.4) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 20%, rgba(10,45,65,0.3) 0%, transparent 55%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Top bar ── */
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 52px;
+    background: rgba(5, 14, 18, 0.92);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 100;
+  }
+
+  .topbar-logo {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .topbar-logo .name {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    color: var(--cyan);
+    font-style: italic;
+  }
+
+  .topbar-logo .tag {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .topbar-nav {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .topbar-nav a {
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.15s;
+  }
+
+  .topbar-nav a:hover { color: var(--cyan); }
+
+  /* ── Mobile menu toggle ── */
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── Layout ── */
+  .layout {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    min-height: 100vh;
+    padding-top: 52px;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    width: var(--sidebar);
+    flex-shrink: 0;
+    position: fixed;
+    top: 52px;
+    left: 0;
+    bottom: 0;
+    overflow-y: auto;
+    border-right: 1px solid var(--border);
+    padding: 28px 0 40px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--dim) transparent;
+    background: rgba(5, 14, 18, 0.6);
+    backdrop-filter: blur(4px);
+    transition: transform 0.25s ease;
+  }
+
+  .sidebar::-webkit-scrollbar { width: 3px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--dim); }
+
+  .sidebar-section {
+    padding: 0 20px;
+    margin-bottom: 24px;
+  }
+
+  .sidebar-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 8px;
+    padding-left: 4px;
+  }
+
+  .sidebar-link {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 5px 8px;
+    letter-spacing: 0.03em;
+    transition: color 0.15s, background 0.15s;
+    border-left: 2px solid transparent;
+  }
+
+  .sidebar-link:hover {
+    color: var(--cyan);
+    background: var(--cyan-glow);
+    border-left-color: var(--cyan-dim);
+  }
+
+  .sidebar-link.active {
+    color: var(--cyan);
+    border-left-color: var(--cyan);
+  }
+
+  /* ── Main content ── */
+  .main {
+    margin-left: var(--sidebar);
+    flex: 1;
+    max-width: 720px;
+    padding: 48px 40px 80px;
+  }
+
+  /* ── Sections ── */
+  .doc-section {
+    margin-bottom: 64px;
+    animation: fadeIn 0.4s ease both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cyan-dim);
+    margin-bottom: 8px;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    color: var(--cyan);
+    font-style: italic;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    color: var(--text);
+    font-style: italic;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin: 24px 0 10px;
+  }
+
+  p { margin-bottom: 14px; color: var(--text); }
+
+  a { color: var(--cyan); text-decoration: none; border-bottom: 1px solid var(--cyan-dim); }
+  a:hover { border-bottom-color: var(--cyan); }
+
+  /* ── Badges ── */
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .badge {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+  }
+
+  .badge.hi {
+    color: var(--cyan);
+    border-color: var(--cyan-dim);
+  }
+
+  /* ── Code blocks ── */
+  pre {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--cyan-dim);
+    padding: 16px 18px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.65;
+    overflow-x: auto;
+    margin: 12px 0 20px;
+    color: #7ab8c8;
+  }
+
+  code {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 1px 6px;
+    color: var(--cyan);
+  }
+
+  /* ── Tables ── */
+  .table-wrap { overflow-x: auto; margin: 12px 0 20px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  th {
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 12px;
+  }
+
+  td {
+    padding: 9px 12px;
+    border-bottom: 1px solid rgba(17, 40, 64, 0.5);
+    color: var(--text);
+    vertical-align: top;
+  }
+
+  td code { font-size: 11px; }
+  td:first-child { color: var(--cyan); white-space: nowrap; }
+
+  tr:last-child td { border-bottom: none; }
+
+  /* ── Callout ── */
+  .callout {
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--cyan-dim);
+    background: var(--bg2);
+    padding: 14px 16px;
+    margin: 16px 0;
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .callout strong { color: var(--cyan); }
+
+  /* ── Method labels ── */
+  .method {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .method-badge {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border: 1px solid var(--cyan-dim);
+    color: var(--cyan);
+  }
+
+  .method-name {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+  }
+
+  /* ── Flow diagram ── */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 16px 0 24px;
+    position: relative;
+  }
+
+  .flow-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 0;
+    position: relative;
+  }
+
+  .flow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 38px;
+    bottom: -12px;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .flow-dot {
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--cyan-dim);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--cyan);
+    flex-shrink: 0;
+    background: var(--bg2);
+    margin-top: 2px;
+  }
+
+  .flow-content { flex: 1; }
+  .flow-title { color: var(--text); font-size: 12px; margin-bottom: 3px; }
+  .flow-desc { color: var(--muted); font-size: 11.5px; line-height: 1.6; }
+
+  /* ── Demo showcase ── */
+  .demo-card {
+    border: 1px solid var(--border);
+    background: var(--bg2);
+    padding: 24px;
+    margin: 16px 0;
+  }
+
+  .demo-card-title {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    color: var(--cyan);
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  .demo-card p { color: var(--muted); font-size: 12px; margin-bottom: 16px; }
+
+  .demo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    border: 1px solid var(--cyan-dim);
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background 0.15s;
+    border-bottom: 1px solid var(--cyan-dim);
+  }
+
+  .demo-link:hover { background: var(--cyan-glow); border-bottom-color: var(--cyan-dim); }
+
+  /* ── Mobile ── */
+  @media (max-width: 768px) {
+    :root { --sidebar: 100vw; }
+
+    .sidebar {
+      transform: translateX(-100%);
+      z-index: 90;
+      width: 280px;
+    }
+
+    .sidebar.open { transform: translateX(0); }
+
+    .main {
+      margin-left: 0;
+      padding: 32px 20px 60px;
+    }
+
+    .menu-toggle { display: block; }
+    .topbar-nav { display: none; }
+
+    table { font-size: 11px; }
+    pre { font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <a class="topbar-logo" href="https://cascade.yzzy.online">
+    <span class="name">Cascade</span>
+    <span class="tag">Docs</span>
+  </a>
+  <nav class="topbar-nav">
+    <a href="https://cascade.yzzy.online/demo/">Demo</a>
+    <a href="https://netclient.yzzy.online">NetClient</a>
+    <a href="https://yzzy.online">yzzy.online</a>
+    <a href="https://github.com/yzzyonline">GitHub</a>
+  </nav>
+  <button class="menu-toggle" onclick="toggleSidebar()">☰ Menu</button>
+</div>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Getting Started</div>
+      <a class="sidebar-link" href="#intro">Introduction</a>
+      <a class="sidebar-link" href="#how-it-works">How it Works</a>
+      <a class="sidebar-link" href="#quickstart">Quick Start</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">API Reference</div>
+      <a class="sidebar-link" href="#endpoints">Endpoints</a>
+      <a class="sidebar-link" href="#models">Model Array</a>
+      <a class="sidebar-link" href="#difficulty">Difficulty</a>
+      <a class="sidebar-link" href="#key-rotation">Key Rotation</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Configuration</div>
+      <a class="sidebar-link" href="#origin">Origin Whitelist</a>
+      <a class="sidebar-link" href="#rate-limit">Rate Limiting</a>
+      <a class="sidebar-link" href="#env">Environment Variables</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Examples</div>
+      <a class="sidebar-link" href="#in-action">See it in Action</a>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- Intro -->
+    <div class="doc-section" id="intro">
+      <div class="section-eyebrow">// Cascade</div>
+      <h1>Multi-provider AI middleware.</h1>
+      <div class="badges">
+        <span class="badge hi">Node.js</span>
+        <span class="badge hi">Express</span>
+        <span class="badge">Self-hosted</span>
+        <span class="badge">Free Providers</span>
+        <span class="badge">Zero Lock-in</span>
+      </div>
+      <p>Cascade is a self-hosted REST middleware that routes AI prompts across multiple free providers — Gemini, Groq, Mistral, and Cerebras. It automatically cascades through a configurable array of models, escalating on complexity and falling back on failure, so your app always gets an answer.</p>
+      <p>Deploy it once on Render and call it from any browser, game, or app with a single <code>POST /ask-ai</code> request. No vendor lock-in — swap, add, or remove models by editing one array.</p>
+    </div>
+
+    <!-- How it works -->
+    <div class="doc-section" id="how-it-works">
+      <h2>How it Works</h2>
+      <p>Cascade maps a <code>difficulty</code> float (0.0–1.0) to a starting position in the MODELS array, then sweeps through models until one succeeds.</p>
+
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-dot">1</div>
+          <div class="flow-content">
+            <div class="flow-title">Difficulty → Index</div>
+            <div class="flow-desc">The <code>difficulty</code> float is mapped to the nearest index in the MODELS array. <code>0.0</code> starts at the cheapest/fastest model, <code>1.0</code> starts at the most capable.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">2</div>
+          <div class="flow-content">
+            <div class="flow-title">Call the model</div>
+            <div class="flow-desc">Cascade calls the provider at that index with your prompt. Each provider is instructed to return a strict JSON response.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">3</div>
+          <div class="flow-content">
+            <div class="flow-title">too_complex → climb</div>
+            <div class="flow-desc">If the model returns <code>state: "too_complex"</code>, Cascade climbs toward the most capable end of the array and tries the next unvisited model.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">4</div>
+          <div class="flow-content">
+            <div class="flow-title">Error → fall back</div>
+            <div class="flow-desc">On a network error, 429 rate limit, or 503, Cascade falls back toward the least capable end and tries the next unvisited model. Rate limits trigger a 1.5s cooldown.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">5</div>
+          <div class="flow-content">
+            <div class="flow-title">Full sweep guarantee</div>
+            <div class="flow-desc">A visited set tracks every attempted model. Cascade guarantees every model is tried exactly once before returning an error — no model is skipped.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout">
+        <strong>Key rotation:</strong> Each provider supports multiple API keys separated by <code>|</code>. On a 429 or auth error, Cascade rotates to the next key before marking the model as failed.
+      </div>
+    </div>
+
+    <!-- Quick Start -->
+    <div class="doc-section" id="quickstart">
+      <h2>Quick Start</h2>
+
+      <h3>1. Clone and install</h3>
+      <pre>git clone https://github.com/yzzyonline/cascade
+cd cascade
+npm install</pre>
+
+      <h3>2. Set up environment variables</h3>
+      <p>Copy <code>.env.example</code> to <code>.env</code> and fill in your API keys:</p>
+      <pre>MY_APP_SECRET=your-secret-here
+GEMINI_KEY=your-gemini-key
+GROQ_KEY=your-groq-key
+MISTRAL_KEY=your-mistral-key
+CEREBRAS_KEY=your-cerebras-key</pre>
+
+      <h3>3. Run locally</h3>
+      <pre>npm start
+# Middleware listening on port 10000 at 0.0.0.0</pre>
+
+      <h3>4. Deploy to Render (free)</h3>
+      <p>Push to GitHub and create a new Web Service on Render. Set the start command to <code>npm start</code>. Add your environment variables in the Render dashboard. Your endpoint will be at <code>https://your-service.onrender.com</code>.</p>
+
+      <div class="callout">
+        <strong>Cold starts:</strong> Render's free tier spins down after 15 minutes of inactivity. The first request after idle may take 30–60 seconds. Call <code>/wake</code> to warm the server before your first prompt.
+      </div>
+
+      <h3>5. Make your first request</h3>
+      <pre>fetch("https://your-service.onrender.com/ask-ai", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    secret: "your-secret-here",
+    difficulty: 0.5,
+    prompt: "Return a JSON object with key 'status' and value 'ok'."
+  })
+})
+.then(r => r.json())
+.then(data => console.log(data.package));</pre>
+    </div>
+
+    <!-- Endpoints -->
+    <div class="doc-section" id="endpoints">
+      <h2>Endpoints</h2>
+
+      <div class="method">
+        <span class="method-badge">GET</span>
+        <span class="method-name">/wake</span>
+      </div>
+      <p>Health ping. Returns <code>200 "Full Sweep Online"</code>. Use this to warm the server after a cold start.</p>
+
+      <div class="method">
+        <span class="method-badge">GET</span>
+        <span class="method-name">/health</span>
+      </div>
+      <p>Returns server status, uptime, model count, key pool sizes, rate limit config, and provider timeout.</p>
+      <pre>{
+  "status": "ok",
+  "uptime": "0h 4m 21s",
+  "models": 10,
+  "keyPools": { "GEMINI": 1, "GROQ": 1, "MISTRAL": 1, "CEREBRAS": 1 },
+  "rateLimit": { "max": 30, "windowMs": 60000 },
+  "providerTimeoutMs": 15000
+}</pre>
+
+      <div class="method">
+        <span class="method-badge">POST</span>
+        <span class="method-name">/ask-ai</span>
+      </div>
+      <p>Send a prompt through the cascade. Returns the first successful model response.</p>
+
+      <h3>Request body</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>secret</code></td><td>string</td><td>Must match <code>MY_APP_SECRET</code> env var.</td></tr>
+            <tr><td><code>difficulty</code></td><td>float 0.0–1.0</td><td>Starting position in the model array. 0.0 = cheapest, 1.0 = most capable.</td></tr>
+            <tr><td><code>prompt</code></td><td>string</td><td>Your prompt. Models are instructed to return a JSON object with <code>state</code> and <code>package</code> fields.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Response</h3>
+      <pre>{
+  "state": "complete",
+  "package": {
+    "package": { /* your data */ }
+  },
+  "answeredBy": {
+    "index": 1,
+    "provider": "groq",
+    "model": "llama-3.3-70b-versatile"
+  }
+}</pre>
+
+      <h3>Error responses</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td><code>403</code></td><td>Invalid or missing secret.</td></tr>
+            <tr><td><code>429</code></td><td>Rate limit exceeded for your IP.</td></tr>
+            <tr><td><code>503</code></td><td>All models exhausted — no provider responded successfully.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Model Array -->
+    <div class="doc-section" id="models">
+      <h2>Model Array</h2>
+      <p>MODELS is a plain array ordered from least to most capable. Difficulty 0.0 maps to index 0, difficulty 1.0 maps to the last entry. Add, remove, or reorder entries freely — the cascade adapts automatically.</p>
+
+      <pre>const MODELS = [
+  { provider: 'cerebras', model: 'llama3.1-8b' },       // 0.00
+  { provider: 'groq',     model: 'llama-3.3-70b-versatile' }, // 0.11
+  { provider: 'gemini',   model: 'gemini-2.0-flash' },  // 0.33
+  { provider: 'mistral',  model: 'mistral-small-latest' }, // 0.56
+  { provider: 'mistral',  model: 'mistral-large-latest' }, // 0.78
+  { provider: 'gemini',   model: 'gemini-2.5-pro' },    // 1.00
+];</pre>
+
+      <h3>Supported providers</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Provider</th><th>Key env var</th><th>API</th></tr></thead>
+          <tbody>
+            <tr><td><code>gemini</code></td><td>GEMINI_KEY</td><td>Google Generative Language</td></tr>
+            <tr><td><code>groq</code></td><td>GROQ_KEY</td><td>OpenAI-compatible</td></tr>
+            <tr><td><code>mistral</code></td><td>MISTRAL_KEY</td><td>OpenAI-compatible</td></tr>
+            <tr><td><code>cerebras</code></td><td>CEREBRAS_KEY</td><td>OpenAI-compatible</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Difficulty -->
+    <div class="doc-section" id="difficulty">
+      <h2>Difficulty</h2>
+      <p>The <code>difficulty</code> float maps to a starting index in the MODELS array using:</p>
+      <pre>index = Math.round(difficulty * (MODELS.length - 1))</pre>
+      <p>This means difficulty always maps proportionally regardless of how many models you have. A 5-model array and a 20-model array both treat <code>0.5</code> as "start in the middle."</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Difficulty</th><th>Use when</th></tr></thead>
+          <tbody>
+            <tr><td><code>0.0 – 0.2</code></td><td>Simple tasks — classification, short answers, data formatting</td></tr>
+            <tr><td><code>0.3 – 0.5</code></td><td>Medium tasks — summaries, Q&amp;A, moderate reasoning</td></tr>
+            <tr><td><code>0.6 – 0.8</code></td><td>Complex tasks — code generation, long-form content, analysis</td></tr>
+            <tr><td><code>0.9 – 1.0</code></td><td>Hard tasks — deep reasoning, multi-step problems, nuanced generation</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Key Rotation -->
+    <div class="doc-section" id="key-rotation">
+      <h2>Key Rotation</h2>
+      <p>Each provider supports multiple API keys. Separate them with <code>|</code> in the env var. Cascade loads them into a pool at startup and tries each one in order if the previous key hits a rate limit (429) or auth error (401/403).</p>
+
+      <pre># .env
+GEMINI_KEY=keyA|keyB|keyC
+GROQ_KEY=keyOne|keyTwo</pre>
+
+      <p>On startup, the server logs how many keys were loaded per provider:</p>
+      <pre>[Keys] GEMINI: 3 key(s) loaded
+[Keys] GROQ: 2 key(s) loaded
+[Keys] MISTRAL: 1 key(s) loaded
+[Keys] CEREBRAS: 1 key(s) loaded</pre>
+
+      <div class="callout">
+        <strong>Separator note:</strong> Use <code>|</code> as the separator — not <code>-</code> or <code>,</code>. The pipe character is guaranteed to never appear in API keys from any supported provider.
+      </div>
+    </div>
+
+    <!-- Origin Whitelist -->
+    <div class="doc-section" id="origin">
+      <h2>Origin Whitelist</h2>
+      <p>The <code>ALLOWED_ORIGINS</code> array at the top of <code>script.js</code> controls which origins can call <code>/ask-ai</code>. Browser-based clients (including Godot Web Exports) always send a real <code>Origin</code> header that cannot be spoofed.</p>
+
+      <pre>// Allow everyone (dev / testing)
+const ALLOWED_ORIGINS = [];
+
+// Restrict to your domain
+const ALLOWED_ORIGINS = [
+  'https://cascade.yzzy.online',
+  'https://yourgame.itch.io'
+];</pre>
+
+      <div class="callout">
+        <strong>Note:</strong> An empty array disables origin checking entirely — useful during local development. The <code>secret</code> field still provides a second layer of protection.
+      </div>
+    </div>
+
+    <!-- Rate Limiting -->
+    <div class="doc-section" id="rate-limit">
+      <h2>Rate Limiting</h2>
+      <p>Cascade uses <code>express-rate-limit</code> to limit requests per IP on the <code>/ask-ai</code> endpoint. Defaults to 30 requests per minute. Configurable via env vars.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Env var</th><th>Default</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>RATE_LIMIT_MAX</code></td><td>30</td><td>Max requests per window per IP</td></tr>
+            <tr><td><code>RATE_LIMIT_WINDOW_MS</code></td><td>60000</td><td>Window size in milliseconds</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>When the limit is exceeded, the server returns:</p>
+      <pre>429 { "state": "error", "content": "Too many requests, please slow down." }</pre>
+    </div>
+
+    <!-- Environment Variables -->
+    <div class="doc-section" id="env">
+      <h2>Environment Variables</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Variable</th><th>Required</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>MY_APP_SECRET</code></td><td>Yes</td><td>Secret key required on every /ask-ai request</td></tr>
+            <tr><td><code>GEMINI_KEY</code></td><td>If using Gemini</td><td>Google AI API key(s), pipe-separated</td></tr>
+            <tr><td><code>GROQ_KEY</code></td><td>If using Groq</td><td>Groq API key(s), pipe-separated</td></tr>
+            <tr><td><code>MISTRAL_KEY</code></td><td>If using Mistral</td><td>Mistral API key(s), pipe-separated</td></tr>
+            <tr><td><code>CEREBRAS_KEY</code></td><td>If using Cerebras</td><td>Cerebras API key(s), pipe-separated</td></tr>
+            <tr><td><code>PORT</code></td><td>No</td><td>Server port. Default: 10000. Render sets this automatically.</td></tr>
+            <tr><td><code>PROVIDER_TIMEOUT_MS</code></td><td>No</td><td>Per-request timeout in ms. Default: 15000.</td></tr>
+            <tr><td><code>RATE_LIMIT_MAX</code></td><td>No</td><td>Max requests per window per IP. Default: 30.</td></tr>
+            <tr><td><code>RATE_LIMIT_WINDOW_MS</code></td><td>No</td><td>Rate limit window in ms. Default: 60000.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- In action -->
+    <div class="doc-section" id="in-action">
+      <h2>See it in Action</h2>
+      <p>This assistant is built on top of Cascade — a simple chat interface that uses <code>POST /ask-ai</code> at difficulty 0.8 to answer questions about yzzy.online products. It demonstrates how easy it is to add AI to any browser app with a single fetch call.</p>
+
+      <div class="demo-card">
+        <div class="demo-card-title">yzzy.online AI Assistant</div>
+        <p>Ask questions about NetClient setup, Apex Racer tuning, Bullet Game enemies, and more. Powered by Cascade running on Render.</p>
+        <a class="demo-link" href="https://cascade.yzzy.online/demo/">Try the demo →</a>
+      </div>
+
+      <pre>// The entire integration is one fetch call
+const res = await fetch("https://your-cascade.onrender.com/ask-ai", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    secret: SECRET,
+    difficulty: 0.8,
+    prompt: SYSTEM_PROMPT + "\n\nUser: " + userMessage
+  })
+});
+
+const data = await res.json();
+const reply = data.package.package.reply;
+console.log("Answered by:", data.answeredBy.model);</pre>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+
+// Close sidebar on link click (mobile)
+document.querySelectorAll('.sidebar-link').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('sidebar').classList.remove('open');
+  });
+});
+
+// Active link highlighting on scroll
+const sections = document.querySelectorAll('.doc-section');
+const links = document.querySelectorAll('.sidebar-link');
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      links.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.sidebar-link[href="#${entry.target.id}"]`);
+      if (active) active.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
