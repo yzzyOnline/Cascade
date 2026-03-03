@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+  fetch("https://yzzyonlineaimiddleware.onrender.com/wake").catch(() => {});
+</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌊%3C/text%3E%3C/svg%3E">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -243,7 +246,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .badge {
@@ -258,6 +261,64 @@
   .badge.hi {
     color: var(--cyan);
     border-color: var(--cyan-dim);
+  }
+
+  /* ── Demo CTA ── */
+  .demo-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    border: 1px solid var(--cyan-dim);
+    padding: 8px 18px;
+    text-decoration: none;
+    transition: background 0.15s;
+    margin-bottom: 32px;
+  }
+
+  .demo-cta:hover { background: var(--cyan-glow); border-bottom: 1px solid var(--cyan-dim); }
+
+  /* ── Features grid ── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 0 0 40px;
+  }
+
+  .feature-card {
+    background: var(--bg);
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    transition: background 0.15s;
+  }
+
+  .feature-card:hover { background: var(--bg2); }
+
+  .feature-icon {
+    font-size: 18px;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .feature-title {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cyan);
+  }
+
+  .feature-desc {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.6;
   }
 
   /* ── Code blocks ── */
@@ -454,6 +515,8 @@
 
     table { font-size: 11px; }
     pre { font-size: 11px; }
+
+    .features-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -497,7 +560,8 @@
       <a class="sidebar-link" href="#env">Environment Variables</a>
     </div>
     <div class="sidebar-section">
-      <div class="sidebar-label">Examples</div>
+      <div class="sidebar-label">Notes</div>
+      <a class="sidebar-link" href="#limitations">Known Limitations</a>
       <a class="sidebar-link" href="#in-action">See it in Action</a>
     </div>
   </nav>
@@ -509,21 +573,64 @@
     <div class="doc-section" id="intro">
       <div class="section-eyebrow">// Cascade</div>
       <h1>Multi-provider AI middleware.</h1>
+      <p>A self-hosted REST middleware that routes AI prompts across multiple free providers — Gemini, Groq, Mistral, and Cerebras. Deploy once, call from anywhere.</p>
       <div class="badges">
         <span class="badge hi">Node.js</span>
         <span class="badge hi">Express</span>
         <span class="badge">Self-hosted</span>
-        <span class="badge">Free Providers</span>
-        <span class="badge">Zero Lock-in</span>
+        <span class="badge">Multiple AI Endpoints</span>
+        <span class="badge hi">v1.1.0</span>
       </div>
-      <p>Cascade is a self-hosted REST middleware that routes AI prompts across multiple free providers — Gemini, Groq, Mistral, and Cerebras. It automatically cascades through a configurable array of models, escalating on complexity and falling back on failure, so your app always gets an answer.</p>
-      <p>Deploy it once on Render and call it from any browser, game, or app with a single <code>POST /ask-ai</code> request. No vendor lock-in — swap, add, or remove models by editing one array.</p>
+      <a class="demo-cta" href="https://cascade.yzzy.online/demo/">▶&nbsp; Try the Demo</a>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🔀</div>
+          <div class="feature-title">Multi-Provider Cascade</div>
+          <div class="feature-desc">Route prompts across Gemini, Groq, Mistral, and Cerebras automatically.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🧠</div>
+          <div class="feature-title">Difficulty Scaling</div>
+          <div class="feature-desc">A 0.0–1.0 float maps your prompt to the right starting model.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⬆️</div>
+          <div class="feature-title">Complexity Escalation</div>
+          <div class="feature-desc">Too hard for this tier? Cascade climbs toward more capable models.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⬇️</div>
+          <div class="feature-title">Failure Fallback</div>
+          <div class="feature-desc">On errors or rate limits, Cascade falls back toward cheaper models.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔑</div>
+          <div class="feature-title">Key Rotation</div>
+          <div class="feature-desc">Multiple API keys per provider, rotated automatically on 429s and auth errors.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🛡️</div>
+          <div class="feature-title">Rate Limiting</div>
+          <div class="feature-desc">Per-IP rate limiting on /ask-ai via express-rate-limit.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <div class="feature-title">Origin Whitelist</div>
+          <div class="feature-desc">Restrict which domains can call your middleware.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✅</div>
+          <div class="feature-title">Full Sweep Guarantee</div>
+          <div class="feature-desc">Every model is tried exactly once before returning an error.</div>
+        </div>
+      </div>
     </div>
 
     <!-- How it works -->
     <div class="doc-section" id="how-it-works">
       <h2>How it Works</h2>
-      <p>Cascade maps a <code>difficulty</code> float (0.0–1.0) to a starting position in the MODELS array, then sweeps through models until one succeeds.</p>
+      <p>Cascade maps a <code>difficulty</code> float (0.0–1.0) to a starting position in the MODELS array, then sweeps through models until one succeeds. A visited set guarantees every model is tried exactly once.</p>
 
       <div class="flow">
         <div class="flow-step">
@@ -544,21 +651,21 @@
           <div class="flow-dot">3</div>
           <div class="flow-content">
             <div class="flow-title">too_complex → climb</div>
-            <div class="flow-desc">If the model returns <code>state: "too_complex"</code>, Cascade climbs toward the most capable end of the array and tries the next unvisited model.</div>
+            <div class="flow-desc">If the model returns <code>state: "too_complex"</code>, Cascade searches upward only — toward more capable models — and tries the next unvisited one.</div>
           </div>
         </div>
         <div class="flow-step">
           <div class="flow-dot">4</div>
           <div class="flow-content">
             <div class="flow-title">Error → fall back</div>
-            <div class="flow-desc">On a network error, 429 rate limit, or 503, Cascade falls back toward the least capable end and tries the next unvisited model. Rate limits trigger a 1.5s cooldown.</div>
+            <div class="flow-desc">On a network error, 429, or 503, Cascade searches downward first toward cheaper models, then upward if nothing is left below. Rate limits trigger a 1.5s cooldown.</div>
           </div>
         </div>
         <div class="flow-step">
           <div class="flow-dot">5</div>
           <div class="flow-content">
             <div class="flow-title">Full sweep guarantee</div>
-            <div class="flow-desc">A visited set tracks every attempted model. Cascade guarantees every model is tried exactly once before returning an error — no model is skipped.</div>
+            <div class="flow-desc">A visited set tracks every attempted model. Cascade guarantees every model is tried exactly once before returning an error — no model is skipped or retried.</div>
           </div>
         </div>
       </div>
@@ -599,7 +706,7 @@ CEREBRAS_KEY=your-cerebras-key</pre>
       </div>
 
       <h3>5. Make your first request</h3>
-      <pre>fetch("https://your-service.onrender.com/ask-ai", {
+      <pre>const res = await fetch("https://your-service.onrender.com/ask-ai", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
@@ -607,9 +714,11 @@ CEREBRAS_KEY=your-cerebras-key</pre>
     difficulty: 0.5,
     prompt: "Return a JSON object with key 'status' and value 'ok'."
   })
-})
-.then(r => r.json())
-.then(data => console.log(data.package));</pre>
+});
+
+const data = await res.json();
+console.log(data.package);          // { status: "ok" }
+console.log(data.answeredBy.model); // "llama-3.3-70b-versatile"</pre>
     </div>
 
     <!-- Endpoints -->
@@ -620,7 +729,7 @@ CEREBRAS_KEY=your-cerebras-key</pre>
         <span class="method-badge">GET</span>
         <span class="method-name">/wake</span>
       </div>
-      <p>Health ping. Returns <code>200 "Full Sweep Online"</code>. Use this to warm the server after a cold start.</p>
+      <p>Health ping. Returns <code>200 "Full Sweep Online"</code>. Use this to warm the server after a cold start before sending your first prompt.</p>
 
       <div class="method">
         <span class="method-badge">GET</span>
@@ -657,9 +766,7 @@ CEREBRAS_KEY=your-cerebras-key</pre>
       <h3>Response</h3>
       <pre>{
   "state": "complete",
-  "package": {
-    "package": { /* your data */ }
-  },
+  "package": { /* your data */ },
   "answeredBy": {
     "index": 1,
     "provider": "groq",
@@ -683,15 +790,19 @@ CEREBRAS_KEY=your-cerebras-key</pre>
     <!-- Model Array -->
     <div class="doc-section" id="models">
       <h2>Model Array</h2>
-      <p>MODELS is a plain array ordered from least to most capable. Difficulty 0.0 maps to index 0, difficulty 1.0 maps to the last entry. Add, remove, or reorder entries freely — the cascade adapts automatically.</p>
+      <p>MODELS is a plain array ordered from least to most capable. Difficulty 0.0 maps to index 0, difficulty 1.0 maps to the last entry. Add, remove, or reorder entries freely — the cascade adapts automatically. If a provider has no API key configured, it is skipped at runtime and treated as a failure.</p>
 
       <pre>const MODELS = [
-  { provider: 'cerebras', model: 'llama3.1-8b' },       // 0.00
-  { provider: 'groq',     model: 'llama-3.3-70b-versatile' }, // 0.11
-  { provider: 'gemini',   model: 'gemini-2.0-flash' },  // 0.33
-  { provider: 'mistral',  model: 'mistral-small-latest' }, // 0.56
-  { provider: 'mistral',  model: 'mistral-large-latest' }, // 0.78
-  { provider: 'gemini',   model: 'gemini-2.5-pro' },    // 1.00
+  { provider: 'cerebras', model: 'llama3.1-8b' },             // 0.00 — fastest, lightest
+  { provider: 'groq',     model: 'llama-3.3-70b-versatile' }, // 0.11 — fast, reliable
+  { provider: 'cerebras', model: 'llama-3.3-70b' },           // 0.22
+  { provider: 'gemini',   model: 'gemini-2.0-flash' },        // 0.33
+  { provider: 'groq',     model: 'llama-3.3-70b-specdec' },   // 0.44
+  { provider: 'mistral',  model: 'mistral-small-latest' },    // 0.56
+  { provider: 'groq',     model: 'llama-3.3-70b-versatile' }, // 0.67
+  { provider: 'mistral',  model: 'mistral-large-latest' },    // 0.78
+  { provider: 'gemini',   model: 'gemini-2.5-flash' },        // 0.89
+  { provider: 'gemini',   model: 'gemini-2.5-pro' },          // 1.00 — most capable
 ];</pre>
 
       <h3>Supported providers</h3>
@@ -713,7 +824,7 @@ CEREBRAS_KEY=your-cerebras-key</pre>
       <h2>Difficulty</h2>
       <p>The <code>difficulty</code> float maps to a starting index in the MODELS array using:</p>
       <pre>index = Math.round(difficulty * (MODELS.length - 1))</pre>
-      <p>This means difficulty always maps proportionally regardless of how many models you have. A 5-model array and a 20-model array both treat <code>0.5</code> as "start in the middle."</p>
+      <p>The mapping is proportional regardless of array size — a 5-model array and a 20-model array both treat <code>0.5</code> as "start in the middle."</p>
 
       <div class="table-wrap">
         <table>
@@ -751,14 +862,14 @@ GROQ_KEY=keyOne|keyTwo</pre>
     <!-- Origin Whitelist -->
     <div class="doc-section" id="origin">
       <h2>Origin Whitelist</h2>
-      <p>The <code>ALLOWED_ORIGINS</code> array at the top of <code>cascade.js</code> controls which origins can call <code>/ask-ai</code>. Browser-based clients (including Godot Web Exports) always send a real <code>Origin</code> header that cannot be spoofed.</p>
+      <p>The <code>ALLOWED_ORIGINS</code> array at the top of <code>cascade.js</code> controls which origins can call <code>/ask-ai</code>. Browser-based clients always send a real <code>Origin</code> header that cannot be spoofed.</p>
 
       <pre>// Allow everyone (dev / testing)
 const ALLOWED_ORIGINS = [];
 
 // Restrict to your domain
 const ALLOWED_ORIGINS = [
-  'https://cascade.yzzy.online',
+  'https://yourdomain.com',
   'https://yourgame.itch.io'
 ];</pre>
 
@@ -791,20 +902,40 @@ const ALLOWED_ORIGINS = [
       <h2>Environment Variables</h2>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Variable</th><th>Required</th><th>Description</th></tr></thead>
+          <thead><tr><th>Variable</th><th>Required</th><th>Default</th><th>Description</th></tr></thead>
           <tbody>
-            <tr><td><code>MY_APP_SECRET</code></td><td>Yes</td><td>Secret key required on every /ask-ai request</td></tr>
-            <tr><td><code>GEMINI_KEY</code></td><td>If using Gemini</td><td>Google AI API key(s), pipe-separated</td></tr>
-            <tr><td><code>GROQ_KEY</code></td><td>If using Groq</td><td>Groq API key(s), pipe-separated</td></tr>
-            <tr><td><code>MISTRAL_KEY</code></td><td>If using Mistral</td><td>Mistral API key(s), pipe-separated</td></tr>
-            <tr><td><code>CEREBRAS_KEY</code></td><td>If using Cerebras</td><td>Cerebras API key(s), pipe-separated</td></tr>
-            <tr><td><code>PORT</code></td><td>No</td><td>Server port. Default: 10000. Render sets this automatically.</td></tr>
-            <tr><td><code>PROVIDER_TIMEOUT_MS</code></td><td>No</td><td>Per-request timeout in ms. Default: 15000.</td></tr>
-            <tr><td><code>RATE_LIMIT_MAX</code></td><td>No</td><td>Max requests per window per IP. Default: 30.</td></tr>
-            <tr><td><code>RATE_LIMIT_WINDOW_MS</code></td><td>No</td><td>Rate limit window in ms. Default: 60000.</td></tr>
+            <tr><td><code>MY_APP_SECRET</code></td><td>Yes</td><td>—</td><td>Secret key required on every /ask-ai request</td></tr>
+            <tr><td><code>GEMINI_KEY</code></td><td>If using Gemini</td><td>—</td><td>Google AI key(s), pipe-separated</td></tr>
+            <tr><td><code>GROQ_KEY</code></td><td>If using Groq</td><td>—</td><td>Groq key(s), pipe-separated</td></tr>
+            <tr><td><code>MISTRAL_KEY</code></td><td>If using Mistral</td><td>—</td><td>Mistral key(s), pipe-separated</td></tr>
+            <tr><td><code>CEREBRAS_KEY</code></td><td>If using Cerebras</td><td>—</td><td>Cerebras key(s), pipe-separated</td></tr>
+            <tr><td><code>PORT</code></td><td>No</td><td>10000</td><td>Server port. Render sets this automatically.</td></tr>
+            <tr><td><code>PROVIDER_TIMEOUT_MS</code></td><td>No</td><td>15000</td><td>Per-request timeout in ms</td></tr>
+            <tr><td><code>RATE_LIMIT_MAX</code></td><td>No</td><td>30</td><td>Max requests per window per IP</td></tr>
+            <tr><td><code>RATE_LIMIT_WINDOW_MS</code></td><td>No</td><td>60000</td><td>Rate limit window in ms</td></tr>
           </tbody>
         </table>
       </div>
+    </div>
+
+    <!-- Known Limitations -->
+    <div class="doc-section" id="limitations">
+      <h2>Known Limitations</h2>
+
+      <h3>Prompt structure is your responsibility</h3>
+      <p>Models are instructed to return <code>{ state, package }</code> JSON, but what goes inside <code>package</code> depends entirely on how you phrase your prompt. Be explicit about the shape you want.</p>
+
+      <h3>too_complex is model-reported</h3>
+      <p>Whether a model escalates is up to the model itself, not a measurable metric. Some models may never return <code>too_complex</code> regardless of prompt difficulty.</p>
+
+      <h3>No streaming</h3>
+      <p><code>/ask-ai</code> is a blocking request. Cascade waits for a complete response before returning. For long prompts this can approach the <code>PROVIDER_TIMEOUT_MS</code> limit.</p>
+
+      <h3>Free tier cold starts</h3>
+      <p>On Render's free tier, the first request after 15 minutes of idle can take 30–60 seconds. Use <code>/wake</code> or point an uptime monitor at it to prevent this.</p>
+
+      <h3>In-memory only</h3>
+      <p>No request logging or response caching. Each call is fully stateless.</p>
     </div>
 
     <!-- In action -->
@@ -830,7 +961,7 @@ const res = await fetch("https://your-cascade.onrender.com/ask-ai", {
 });
 
 const data = await res.json();
-const reply = data.package.package.reply;
+const reply = data.package.reply;
 console.log("Answered by:", data.answeredBy.model);</pre>
     </div>
 

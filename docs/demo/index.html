@@ -1,358 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌊%3C/text%3E%3C/svg%3E">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cascade — yzzy.online</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌊%3C/text%3E%3C/svg%3E">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cascade — yzzy.online</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <script>
+    fetch("https://yzzyonlineaimiddleware.onrender.com/wake").catch(() => {});
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  :root {
-    --bg:        #050e12;
-    --bg2:       #071520;
-    --bg3:       #0a1e2e;
-    --surface:   #0d2235;
-    --border:    #112840;
-    --cyan:      #4dd9c0;
-    --cyan-dim:  #1a6e5e;
-    --cyan-glow: rgba(77, 217, 192, 0.12);
-    --text:      #c8dde8;
-    --muted:     #4a7a8a;
-    --dim:       #1e4a5e;
-    --mono:      'DM Mono', monospace;
-    --serif:     'Instrument Serif', serif;
-  }
+    :root {
+      --bg:        #050e12;
+      --bg2:       #071520;
+      --bg3:       #0a1e2e;
+      --surface:   #0d2235;
+      --border:    #112840;
+      --cyan:      #4dd9c0;
+      --cyan-dim:  #1a6e5e;
+      --cyan-glow: rgba(77, 217, 192, 0.12);
+      --text:      #c8dde8;
+      --muted:     #4a7a8a;
+      --dim:       #1e4a5e;
+      --mono:      'DM Mono', monospace;
+      --serif:     'Instrument Serif', serif;
+    }
 
-  html, body {
-    height: 100%;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--mono);
-    overflow: hidden;
-  }
+    html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--mono); overflow: hidden; }
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 80% 50% at 20% 80%, rgba(13, 60, 80, 0.5) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 80% 20%, rgba(10, 45, 65, 0.4) 0%, transparent 55%),
-      radial-gradient(ellipse 100% 80% at 50% 100%, rgba(5, 25, 40, 0.8) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 80%, rgba(13,60,80,0.5) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 20%, rgba(10,45,65,0.4) 0%, transparent 55%),
+        radial-gradient(ellipse 100% 80% at 50% 100%, rgba(5,25,40,0.8) 0%, transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
 
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(
-      180deg,
-      transparent,
-      transparent 60px,
-      rgba(77, 217, 192, 0.015) 60px,
-      rgba(77, 217, 192, 0.015) 61px
-    );
-    pointer-events: none;
-    z-index: 0;
-    animation: drift 12s ease-in-out infinite;
-  }
+    body::after {
+      content: ''; position: fixed; inset: 0;
+      background: repeating-linear-gradient(180deg, transparent, transparent 60px, rgba(77,217,192,0.015) 60px, rgba(77,217,192,0.015) 61px);
+      pointer-events: none; z-index: 0; animation: drift 12s ease-in-out infinite;
+    }
 
-  @keyframes drift {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(-30px); }
-  }
+    @keyframes drift { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
 
-  .shell {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-rows: auto 1fr;
-    height: 100vh;
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
+    .shell { position: relative; z-index: 1; display: grid; grid-template-rows: auto 1fr; height: 100vh; max-width: 860px; margin: 0 auto; padding: 0 24px; }
 
-  header {
-    padding: 28px 0 20px;
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-  }
+    header { padding: 28px 0 20px; display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid var(--border); }
 
-  .logo { display: flex; align-items: baseline; gap: 10px; }
+    .logo { display: flex; align-items: baseline; gap: 10px; }
+    .logo-name { font-family: var(--serif); font-size: 1.6rem; color: var(--cyan); letter-spacing: -0.01em; font-style: italic; }
+    .logo-tag { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
 
-  .logo-name {
-    font-family: var(--serif);
-    font-size: 1.6rem;
-    color: var(--cyan);
-    letter-spacing: -0.01em;
-    font-style: italic;
-  }
+    .nav { display: flex; gap: 20px; align-items: center; }
+    .nav a { font-family: var(--mono); font-size: 11px; color: var(--muted); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.15s; }
+    .nav a:hover { color: var(--cyan); }
 
-  .logo-tag {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
+    .chat-wrap { display: grid; grid-template-rows: 1fr auto; padding: 24px 0 28px; gap: 16px; min-height: 0; }
 
-  .nav { display: flex; gap: 20px; align-items: center; }
+    .messages { overflow-y: auto; display: flex; flex-direction: column; gap: 20px; padding-right: 8px; scrollbar-width: thin; scrollbar-color: var(--dim) transparent; }
+    .messages::-webkit-scrollbar { width: 4px; }
+    .messages::-webkit-scrollbar-thumb { background: var(--dim); border-radius: 2px; }
 
-  .nav a {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-    text-decoration: none;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: color 0.15s;
-  }
+    .welcome { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 16px; padding: 40px 0; animation: fadeIn 0.8s ease both; }
+    .welcome-title { font-family: var(--serif); font-size: clamp(2rem,5vw,3rem); color: var(--cyan); font-style: italic; line-height: 1.1; }
+    .welcome-sub { font-size: 12px; color: var(--muted); letter-spacing: 0.08em; max-width: 380px; line-height: 1.7; }
 
-  .nav a:hover { color: var(--cyan); }
+    .suggestions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 8px; }
+    .suggestion { font-family: var(--mono); font-size: 11px; color: var(--cyan-dim); border: 1px solid var(--border); padding: 6px 14px; cursor: pointer; transition: all 0.15s; background: none; letter-spacing: 0.05em; }
+    .suggestion:hover { border-color: var(--cyan-dim); color: var(--cyan); background: var(--cyan-glow); }
 
-  .chat-wrap {
-    display: grid;
-    grid-template-rows: 1fr auto;
-    padding: 24px 0 28px;
-    gap: 16px;
-    min-height: 0;
-  }
+    .msg { display: flex; flex-direction: column; gap: 6px; animation: slideUp 0.25s ease both; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-  .messages {
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding-right: 8px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--dim) transparent;
-  }
+    .msg-role { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .msg.user .msg-role { color: var(--cyan-dim); text-align: right; }
+    .msg-body { font-size: 13px; line-height: 1.75; color: var(--text); white-space: pre-wrap; word-break: break-word; }
+    .msg.user .msg-body { text-align: right; color: #a8ccd8; }
+    .msg-body a { color: var(--cyan); text-decoration: none; border-bottom: 1px solid var(--cyan-dim); }
+    .msg-body a:hover { border-bottom-color: var(--cyan); }
+    .msg-body code { font-family: var(--mono); font-size: 11.5px; background: var(--surface); border: 1px solid var(--border); padding: 1px 6px; color: var(--cyan); }
+    .msg-body pre { background: var(--bg2); border: 1px solid var(--border); border-left: 2px solid var(--cyan-dim); padding: 14px 16px; font-size: 11.5px; overflow-x: auto; margin: 8px 0; line-height: 1.6; color: #7ab8c8; white-space: pre; }
 
-  .messages::-webkit-scrollbar { width: 4px; }
-  .messages::-webkit-scrollbar-track { background: transparent; }
-  .messages::-webkit-scrollbar-thumb { background: var(--dim); border-radius: 2px; }
+    .thinking { display: flex; gap: 5px; align-items: center; padding: 4px 0; }
+    .thinking span { width: 5px; height: 5px; border-radius: 50%; background: var(--cyan-dim); animation: bob 1.2s ease-in-out infinite; }
+    .thinking span:nth-child(2) { animation-delay: 0.15s; }
+    .thinking span:nth-child(3) { animation-delay: 0.3s; }
+    .thinking-label { font-size: 10px; color: var(--dim); letter-spacing: 0.08em; margin-left: 6px; }
+    @keyframes bob { 0%,100% { opacity: 0.3; transform: translateY(0); } 50% { opacity: 1; transform: translateY(-4px); } }
 
-  .welcome {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    gap: 16px;
-    padding: 40px 0;
-    animation: fadeIn 0.8s ease both;
-  }
+    .input-wrap { border: 1px solid var(--border); background: var(--bg2); display: flex; align-items: flex-end; transition: border-color 0.2s; }
+    .input-wrap:focus-within { border-color: var(--cyan-dim); box-shadow: 0 0 0 1px var(--cyan-dim), 0 0 20px rgba(77,217,192,0.06); }
+    textarea { flex: 1; background: none; border: none; outline: none; resize: none; font-family: var(--mono); font-size: 13px; color: var(--text); padding: 14px 16px; line-height: 1.6; min-height: 48px; max-height: 160px; caret-color: var(--cyan); }
+    textarea::placeholder { color: var(--muted); }
+    .send-btn { background: none; border: none; border-left: 1px solid var(--border); color: var(--muted); padding: 14px 18px; cursor: pointer; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.15s, background 0.15s; align-self: stretch; display: flex; align-items: center; }
+    .send-btn:hover:not(:disabled) { color: var(--cyan); background: var(--cyan-glow); }
+    .send-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
-  .welcome-title {
-    font-family: var(--serif);
-    font-size: clamp(2rem, 5vw, 3rem);
-    color: var(--cyan);
-    font-style: italic;
-    line-height: 1.1;
-  }
-
-  .welcome-sub {
-    font-size: 12px;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-    max-width: 380px;
-    line-height: 1.7;
-  }
-
-  .suggestions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
-    margin-top: 8px;
-  }
-
-  .suggestion {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--cyan-dim);
-    border: 1px solid var(--border);
-    padding: 6px 14px;
-    cursor: pointer;
-    transition: all 0.15s;
-    background: none;
-    letter-spacing: 0.05em;
-  }
-
-  .suggestion:hover {
-    border-color: var(--cyan-dim);
-    color: var(--cyan);
-    background: var(--cyan-glow);
-  }
-
-  .msg {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    animation: slideUp 0.25s ease both;
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(8px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-
-  .msg-role {
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .msg.user .msg-role { color: var(--cyan-dim); text-align: right; }
-
-  .msg-body {
-    font-size: 13px;
-    line-height: 1.75;
-    color: var(--text);
-    white-space: pre-wrap;
-    word-break: break-word;
-  }
-
-  .msg.user .msg-body { text-align: right; color: #a8ccd8; }
-
-  .msg-body a {
-    color: var(--cyan);
-    text-decoration: none;
-    border-bottom: 1px solid var(--cyan-dim);
-  }
-
-  .msg-body a:hover { border-bottom-color: var(--cyan); }
-
-  .msg-body code {
-    font-family: var(--mono);
-    font-size: 11.5px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 1px 6px;
-    color: var(--cyan);
-  }
-
-  .msg-body pre {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-left: 2px solid var(--cyan-dim);
-    padding: 14px 16px;
-    font-size: 11.5px;
-    overflow-x: auto;
-    margin: 8px 0;
-    line-height: 1.6;
-    color: #7ab8c8;
-    white-space: pre;
-  }
-
-  .thinking {
-    display: flex;
-    gap: 5px;
-    align-items: center;
-    padding: 4px 0;
-  }
-
-  .thinking span {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--cyan-dim);
-    animation: bob 1.2s ease-in-out infinite;
-  }
-
-  .thinking span:nth-child(2) { animation-delay: 0.15s; }
-  .thinking span:nth-child(3) { animation-delay: 0.3s; }
-
-  @keyframes bob {
-    0%, 100% { opacity: 0.3; transform: translateY(0); }
-    50%       { opacity: 1;   transform: translateY(-4px); }
-  }
-
-  .input-wrap {
-    border: 1px solid var(--border);
-    background: var(--bg2);
-    display: flex;
-    align-items: flex-end;
-    transition: border-color 0.2s;
-  }
-
-  .input-wrap:focus-within {
-    border-color: var(--cyan-dim);
-    box-shadow: 0 0 0 1px var(--cyan-dim), 0 0 20px rgba(77, 217, 192, 0.06);
-  }
-
-  textarea {
-    flex: 1;
-    background: none;
-    border: none;
-    outline: none;
-    resize: none;
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--text);
-    padding: 14px 16px;
-    line-height: 1.6;
-    min-height: 48px;
-    max-height: 160px;
-    caret-color: var(--cyan);
-  }
-
-  textarea::placeholder { color: var(--muted); }
-
-  .send-btn {
-    background: none;
-    border: none;
-    border-left: 1px solid var(--border);
-    color: var(--muted);
-    padding: 14px 18px;
-    cursor: pointer;
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    transition: color 0.15s, background 0.15s;
-    align-self: stretch;
-    display: flex;
-    align-items: center;
-  }
-
-  .send-btn:hover:not(:disabled) {
-    color: var(--cyan);
-    background: var(--cyan-glow);
-  }
-
-  .send-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
-  .input-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 2px 0;
-  }
-
-  .input-hint { font-size: 10px; color: var(--dim); letter-spacing: 0.08em; }
-  .answered-by { font-size: 10px; color: var(--dim); letter-spacing: 0.06em; }
-  .answered-by span { color: var(--cyan-dim); }
-</style>
+    .input-meta { display: flex; justify-content: space-between; align-items: center; padding: 6px 2px 0; }
+    .input-hint { font-size: 10px; color: var(--dim); letter-spacing: 0.08em; }
+    .answered-by { font-size: 10px; color: var(--dim); letter-spacing: 0.06em; }
+    .answered-by span { color: var(--cyan-dim); }
+  </style>
 </head>
 <body>
 <div class="shell">
-
   <header>
     <div class="logo">
       <span class="logo-name">Cascade</span>
@@ -378,16 +135,9 @@
         </div>
       </div>
     </div>
-
     <div>
       <div class="input-wrap">
-        <textarea
-          id="input"
-          placeholder="Ask about NetClient, Apex Racer, Bullet Game, Cascade..."
-          rows="1"
-          onkeydown="handleKey(event)"
-          oninput="autoResize(this)"
-        ></textarea>
+        <textarea id="input" placeholder="Ask about NetClient, Apex Racer, Bullet Game, Cascade..." rows="1" onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
         <button class="send-btn" id="send-btn" onclick="sendMessage()">Send</button>
       </div>
       <div class="input-meta">
@@ -396,7 +146,6 @@
       </div>
     </div>
   </div>
-
 </div>
 
 <script>
@@ -404,228 +153,107 @@ const ENDPOINT   = 'https://yzzyonlineaimiddleware.onrender.com/ask-ai';
 const SECRET     = 'demo-cascade-2026';
 const DIFFICULTY = 0.5;
 
-const SYSTEM_PROMPT = `You are a helpful assistant for yzzy.online, a browser-focused game dev site.
+const README_URLS = {
+  cascade:   'https://raw.githubusercontent.com/yzzyOnline/Cascade/refs/heads/main/readme.md',
+  netclient: 'https://raw.githubusercontent.com/yzzyOnline/netClient/refs/heads/main/readme.md'
+};
 
-STRICT RULES — follow these exactly:
-1. ONLY answer using information explicitly stated in the docs below. Never invent, assume, or extrapolate anything not written here.
-2. Never write code examples that are not already in the docs. If someone asks for code that isn't here, say "Sorry, I can only answer questions about yzzy.online. For more info, visit [link]" and nothing else.
-3. If a question is not covered by these docs, respond with exactly: "Sorry, I can only answer questions about yzzy.online. For more info, visit [most relevant link from the docs]."
-4. Never make up API methods, parameters, events, or server code. If it's not listed below, it doesn't exist as far as you're concerned.
-5. Do not answer questions unrelated to yzzy.online products.
-6. server.js is a pre-built companion file users download from https://github.com/yzzyonline/netClient — users do NOT write it themselves. Never show or invent server.js code.
-7. If you fill in ANY gap, make ANY assumption, or add ANY detail not explicitly in the docs, you MUST flag it clearly with: "*(not in the docs — my best guess)*". This applies to every sentence that goes beyond what is written below.
-8. You are an AI assistant powered by Cascade, yzzy.online's multi-provider AI middleware. This page is the official Cascade demo at cascade.yzzy.online/demo — you are a live demonstration of what Cascade can do. If asked whether you use Cascade, say yes. If asked how you work, explain that you are a chat interface that calls POST /ask-ai on a self-hosted Cascade instance, with a system prompt injected into each request and difficulty set to 0.5.
+const readmeCache = {};
 
-GitHub org: https://github.com/yzzyonline
-A card game is also currently in development.
+const SHORT_SYSTEM_PROMPT = `You are a helpful dev assistant for yzzy.online — a browser-focused game dev site by yzzy online.
 
----
+You help users understand, debug, and implement code using yzzy.online products. Use the product summaries below as your primary source, and apply general JavaScript, Node.js, and WebSocket knowledge to assist with debugging and implementation.
 
-## NetClient
-A lightweight, zero-dependency WebSocket library for browser games. Single ES module file — no install, just drop it in. Full docs and live demo at https://netclient.yzzy.online.
+Never invent API methods or parameters not in the docs. You are powered by Cascade — yzzy.online's multi-provider AI middleware.
 
-**Installation:**
-Download netClient.js and import it. Script tag must use type="module".
-\`\`\`
-import NetClient from "./netClient.js";
-const net = new NetClient("wss://your-server.onrender.com", "myGame");
-net.connect();
-\`\`\`
+GitHub org: https://github.com/yzzyonline. A card game is also in development.
 
-**Server setup:**
-Download the pre-built server.js from https://github.com/yzzyonline/netClient. It uses the ws package. Deploy free to Render — push server.js and package.json to GitHub, create a Web Service, set start command to node server.js. URL will be wss://your-service.onrender.com. Free tier cold starts take 30-60s after 15min idle. Only env var needed: PORT (Render sets automatically, default 8080). Run locally with: npm install ws then node server.js.
-
-**Rooms:**
-- net.createRoom(tags, maxClients, isPrivate, metaData) — creates a room, fires roomCreated with a 5-character code
-- net.joinRoom(roomId) — joins by 5-character code
-- net.leaveRoom() — leaves room, triggers automatic host reassignment if you were host
-- net.listRooms(tags?) — lists public rooms, fires roomList
-
-**Messaging:**
-- net.sendRelay(payload) — broadcasts JSON to all players, fires relay on recipients
-- net.tellOwner(payload) — sends privately to host only, fires tellOwner on host
-- net.tellPlayer(playerId, payload) — sends to one specific player, fires tellPlayer on target
-- net.sendBinary(buffer) — sends raw ArrayBuffer for high-frequency data like position updates, fires binary on recipients
-
-**Key events:**
-connected, disconnected, assignedId(playerId), roomCreated(roomId), roomJoined(roomId, playerId, ownerId), playerJoined(playerId), playerLeft(playerId), relay(fromId, payload), tellOwner(fromId, payload), tellPlayer(fromId, payload), binary(fromId, buffer), makeHost(oldHostId), reassignedHost(newHostId, oldHostId), roomList(rooms), error(message)
-
-**Host controls (only work if net.isHost === true):**
-- net.addTag("closed") — lock room on game start
-- net.removeTag(tag) — remove a tag
-- net.updateMeta(metaData) — update lobby metadata
-
-**Instance properties:** net.playerId, net.roomId, net.ownerId, net.isHost
-
-For anything more detailed, point to https://netclient.yzzy.online.
+STRICT RULE: Never mention, suggest, or reference any API method, parameter, event, property, or file that is not explicitly listed by name in the documentation below. If something is not in the docs, say it does not exist — do not invent it, suggest workarounds using made-up methods, or fill gaps with outside knowledge. If you cannot answer fully from the docs, say so and link to the full docs instead.
 
 ---
 
-## Apex Racer
-A browser racing game built with Babylon.js featuring realistic physics — Pacejka tire model, weight transfer, and 3 cars with distinct handling. Early demo, currently free drive only (no lap timer or scoring). Play at https://apexracer.yzzy.online.
+## Cascade (summary)
+Self-hosted REST middleware routing AI prompts across Gemini, Groq, Mistral, and Cerebras.
+- POST /ask-ai — body: { secret, difficulty (0.0-1.0), prompt }. Returns { state, package, answeredBy }.
+- GET /wake — cold-start ping. GET /health — uptime, model count, key pools, config.
+- difficulty maps to starting model index. too_complex climbs up. errors fall back down.
+- Key rotation: pipe-separated keys (GEMINI_KEY=keyA|keyB). ALLOWED_ORIGINS for whitelisting.
+- Supported providers: Gemini, Groq, Mistral, Cerebras only. Claude and OpenAI are not supported.
+- Full docs: https://cascade.yzzy.online
 
-**Cars:**
-- Katana — RWD
-- Bruiser — AWD (Attessa system)
-- Spec R — FWD
+**Cascade known issues:**
+- Slow first request: Render's free tier spins down after 15 min idle. First request after idle takes 30-60s. Use GET /wake beforehand.
+- Model skipped silently: If a provider has no API key configured it is skipped at runtime with no error — check .env and GET /health to see key pool counts.
+- All models failed (503): Every model was tried and none succeeded. Check /health to verify keys are loaded.
+- What model answered: the answeredBy field in the response contains the provider and model name.
 
-**Maps:** Figure-8 track and Oval track, both made of rough box geometry in Babylon.js.
+## NetClient (summary)
+Zero-dependency WebSocket library for browser games. Single ES module file.
+- new NetClient(url, gameName). Connect with net.connect().
+- Rooms: createRoom, joinRoom, leaveRoom, listRooms
+- Messaging: sendRelay (broadcast), tellOwner, tellPlayer, sendBinary (ArrayBuffer)
+- Host controls: addTag, removeTag, updateMeta, setMeta
+- Events: connected, assignedId, roomCreated, roomJoined, playerJoined, playerLeft, relay, tellOwner, tellPlayer, binary, makeHost, reassignedHost, roomList, error
+- Properties: net.playerId, net.roomId, net.ownerId, net.isHost
+- Full docs: https://netclient.yzzy.online
+- NOT compatible with Unity, Unreal, or non-browser environments — browser ES module only.
+- server.js is a pre-built companion file downloaded from https://github.com/yzzyonline/netClient — users do NOT write it themselves. Never show or invent server.js code.
 
-**Car tuning:**
-All cars support full physics tuning via import/export JSON config. Tunable variables: MASS, FRONT_BIAS, CG_HEIGHT, PAC_B/C/D/E (Pacejka tire curve), SPRING_K, DAMPER_C, ENG_F, BRK_F, HBRK_F, STEER_MAX, STEER_SPD, STEER_RET, TIRE_COMPOUND_FRONT/REAR, HANDBRAKE_MU_K, AERO_DRAG, DOWNFORCE_COEFF, DOWNFORCE_MIN_KMH, WEIGHT_TRANSFER_SCALE, SLIP_ANGLE_THRESHOLD, MAX_YAW_RATE.
+**NetClient known limitations:**
+- No player list on join: roomJoined does not include existing players. Workaround: send state on join with sendRelay and listen for relay from others.
+- No reconnection: dropped connections always get a new playerId — no way to reclaim a previous ID.
+- No net.off(): listeners persist for the lifetime of the instance. Use a flag variable to gate callbacks.
+- relay is a NetClient concept — it is not part of Cascade. Do not confuse the two.
+- server.js is a NetClient companion file — it is not part of Cascade.
 
-Default Katana config:
-\`\`\`
-{"car":"katana","MASS":780,"FRONT_BIAS":0.43,"CG_HEIGHT":0.55,"PAC_B":8,"PAC_C":1.6,"PAC_D":2,"PAC_E":0.75,"SPRING_K":38000,"DAMPER_C":4200,"ENG_F":5000,"BRK_F":10000,"HBRK_F":22000,"STEER_MAX":0.48,"STEER_SPD":3.2,"STEER_RET":2.6,"TIRE_COMPOUND_FRONT":1,"TIRE_COMPOUND_REAR":0.5,"HANDBRAKE_MU_K":0.92,"AERO_DRAG":0.4,"DOWNFORCE_COEFF":0.18,"DOWNFORCE_MIN_KMH":50,"WEIGHT_TRANSFER_SCALE":0.45,"SLIP_ANGLE_THRESHOLD":0.1,"MAX_YAW_RATE":10}
-\`\`\`
+## Apex Racer (summary)
+Browser racing game — Babylon.js, Pacejka physics. 3 cars: Katana (RWD), Bruiser (AWD), Spec R (FWD). Full JSON tuning config. Play: https://apexracer.yzzy.online
 
-**Controls (all rebindable):** WASD/arrows to drive, Space handbrake, R respawn. Controller: left stick steer, RT/R2 accelerate, LT/L2 brake, bottom face button (X on PlayStation) handbrake, top face button (Triangle on PlayStation) respawn.
+## Bullet Game (summary)
+Top-down pixel roguelike in Godot, exported to browser. 5 guns. Boss flash colours = attack type. Play: https://bulletgame.yzzy.online
 
 ---
 
-## Bullet Game
-A top-down pixel roguelike shooter built in Godot, exported to browser. Purely mechanical, no lore. Death screen: "you dead as hell". Play at https://bulletgame.yzzy.online.
+ROUTING RULES:
 
-**Structure:** Tutorial level or randomly generated dungeon (1 boss room, 2 item rooms, 4 enemy rooms).
+Return {"state":"need_docs","package":{"api":"cascade"}} or {"state":"need_docs","package":{"api":"netclient"}} for ANY Cascade or NetClient question involving setup, install, deploy, implement, integrate, specific parameters, debugging, errors, code examples, or environment variables.
 
-**Guns:**
-- Basic gun — auto-tracking
-- Tommy gun — auto-tracking, tutorial only
-- Bat — melee, can destroy bullets
-- Slingshot — bounces off walls and one enemy
-- Hunting rifle — only non-auto-tracking gun, requires manual aim
-Swap: B (keyboard) or Circle (PlayStation).
+Only answer from summaries for: general "what is X" overviews, Apex Racer, Bullet Game, yzzy.online broadly.
 
-**Enemies:** Melee (follows, contact damage), Ranged (single bullet), Shotgunner (spread), Mage (tracking bullets).
+For normal answers: {"state":"complete","package":{"reply":"your answer here"}}
 
-**Boss flashes:** Red → melee dash, Blue → curving bullet circle, Yellow → straight bullet circle, Purple → tracking bullet circle.
+Return ONLY raw JSON. No markdown, no extra text.`;
 
-**Controls:** WASD/arrows move, Space shoot, B swap gun, P pause. Controller: left stick move, bottom face button (X on PlayStation) shoot, Circle swap, Settings/Options pause.
-
----
-
-## Cascade
-A self-hosted REST middleware that routes AI prompts across multiple free providers — Gemini, Groq, Mistral, and Cerebras. Automatically cascades through a configurable array of models, escalating on complexity and falling back on failure. Full docs at https://cascade.yzzy.online. This demo is hosted at https://cascade.yzzy.online/demo.
-
-**How it works:**
-A difficulty float (0.0–1.0) maps to a starting position in the MODELS array. Cascade then:
-1. Calls the model at that index
-2. If the model returns too_complex → climbs toward more capable models
-3. If the model errors or rate limits → falls back toward cheaper models
-4. Tracks visited models to guarantee every model is tried exactly once before giving up
-
-**Quick start:**
-Fork the repo on GitHub, then clone your fork:
-\`\`\`
-git clone https://github.com/YOUR_USERNAME/cascade
-cd cascade
-npm install
-\`\`\`
-
-Copy .env.example to .env and add your keys:
-\`\`\`
-cp .env.example .env
-\`\`\`
-\`\`\`
-MY_APP_SECRET=your-secret-here
-GEMINI_KEY=your-gemini-key
-GROQ_KEY=your-groq-key
-MISTRAL_KEY=your-mistral-key
-CEREBRAS_KEY=your-cerebras-key
-\`\`\`
-
-Run locally: npm start — listens on port 10000.
-
-Deploy to Render: push your fork to GitHub, create a Web Service pointing at your fork, set start command to npm start, add env vars in the dashboard.
-
-**API endpoints:**
-
-POST /ask-ai — send a prompt through the cascade.
-Request body:
-- secret (string) — must match MY_APP_SECRET env var
-- difficulty (float 0.0–1.0) — starting model position. 0.0 = cheapest/fastest, 1.0 = most capable
-- prompt (string) — your prompt. Models are instructed to return JSON with state and package fields.
-
-Response:
-\`\`\`
-{
-  "state": "complete",
-  "package": { "package": { } },
-  "answeredBy": { "index": 1, "provider": "groq", "model": "llama-3.3-70b-versatile" }
+function detectNeedDocs(data, rawStr) {
+  if (data?.state === 'need_docs') return data.package?.api || null;
+  if (!rawStr) return null;
+  if (/need.?docs/i.test(rawStr)) {
+    if (/netclient/i.test(rawStr)) return 'netclient';
+    if (/cascade/i.test(rawStr)) return 'cascade';
+  }
+  const bare = rawStr.match(/"api"\s*:\s*"(cascade|netclient)"/i);
+  if (bare) return bare[1].toLowerCase();
+  return null;
 }
-\`\`\`
 
-Error responses: 403 (bad secret), 429 (rate limited), 503 (all models exhausted).
+function buildFullSystemPrompt(api, readme) {
+  const docs = readme || '(documentation unavailable)';
+  return `You are an assistant for yzzy.online. Answer the user's question using ONLY the documentation below. Do not use outside knowledge — if it is not in the docs, say so and link to the full docs.
+STRICT RULE: Never mention, suggest, or reference any API method, parameter, event, or property that is not explicitly listed by name in the documentation below. If something does not exist in the docs, say it does not exist — do not invent it.
+--- DOCUMENTATION START ---
+${docs}
+--- DOCUMENTATION END ---
 
-GET /wake — returns 200 "Full Sweep Online". Use to warm the server after a cold start.
+Return ONLY this JSON: {"state":"complete","package":{"reply":"your answer here"}}
+No markdown fences. No extra text. Just the JSON object.`;
+}
 
-GET /health — returns uptime, model count, key pool sizes, rate limit config, and provider timeout.
-
-**Calling Cascade from a browser app:**
-\`\`\`
-const res = await fetch("https://your-cascade.onrender.com/ask-ai", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    secret: "your-secret-here",
-    difficulty: 0.5,
-    prompt: "Your prompt here."
-  })
-});
-const data = await res.json();
-const reply = data.package.package.reply;
-console.log("Answered by:", data.answeredBy.provider, data.answeredBy.model);
-\`\`\`
-
-**Model array:**
-Edit the MODELS array in cascade.js to add, remove, or reorder models. The cascade adapts automatically. Ordered from least to most capable:
-\`\`\`
-const MODELS = [
-  { provider: 'cerebras', model: 'llama3.1-8b' },             // 0.0 — fastest
-  { provider: 'groq',     model: 'llama-3.3-70b-versatile' }, // 0.11
-  { provider: 'cerebras', model: 'llama-3.3-70b' },           // 0.22
-  { provider: 'gemini',   model: 'gemini-2.0-flash' },        // 0.33
-  { provider: 'groq',     model: 'llama-3.3-70b-specdec' },   // 0.44
-  { provider: 'mistral',  model: 'mistral-small-latest' },    // 0.56
-  { provider: 'groq',     model: 'llama-3.3-70b-versatile' }, // 0.67
-  { provider: 'mistral',  model: 'mistral-large-latest' },    // 0.78
-  { provider: 'gemini',   model: 'gemini-2.5-flash' },        // 0.89
-  { provider: 'gemini',   model: 'gemini-2.5-pro' },          // 1.0 — most capable
-];
-\`\`\`
-
-**Difficulty guide:**
-- 0.0–0.2: Simple tasks — classification, short answers, formatting
-- 0.3–0.5: Medium tasks — Q&A, summaries, moderate reasoning
-- 0.6–0.8: Complex tasks — code generation, long-form content, analysis
-- 0.9–1.0: Hard tasks — deep reasoning, multi-step problems
-
-**Key rotation:**
-Multiple keys per provider, pipe-separated:
-\`\`\`
-GEMINI_KEY=keyA|keyB|keyC
-\`\`\`
-On a 429 or auth error, Cascade rotates to the next key before marking the model as failed.
-
-**Origin whitelist:**
-Edit ALLOWED_ORIGINS in cascade.js. Empty array = accept from everywhere:
-\`\`\`
-const ALLOWED_ORIGINS = [];                          // open
-const ALLOWED_ORIGINS = ['https://yourdomain.com']; // restricted
-\`\`\`
-
-**Supported providers:** Gemini (GEMINI_KEY), Groq (GROQ_KEY), Mistral (MISTRAL_KEY), Cerebras (CEREBRAS_KEY).
-
-**Environment variables:**
-- MY_APP_SECRET — required on every /ask-ai request
-- GEMINI_KEY — Google AI key(s), pipe-separated
-- GROQ_KEY — Groq key(s), pipe-separated
-- MISTRAL_KEY — Mistral key(s), pipe-separated
-- CEREBRAS_KEY — Cerebras key(s), pipe-separated
-- PORT — default 10000, Render sets automatically
-- PROVIDER_TIMEOUT_MS — per-request timeout in ms, default 15000
-- RATE_LIMIT_MAX — max requests per window per IP, default 30
-- RATE_LIMIT_WINDOW_MS — rate limit window in ms, default 60000`;
+function buildPrompt(systemPrompt, history, userMessage) {
+  const convo = history.slice(0, -1)
+    .map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`)
+    .join('\n');
+  return `${systemPrompt}\n\n---\n${convo ? `Conversation so far:\n${convo}\n\n` : ''}User: ${userMessage}\n\nReturn ONLY a JSON object. No markdown. No explanation.`;
+}
 
 let history = [];
 let isLoading = false;
@@ -636,10 +264,7 @@ function autoResize(el) {
 }
 
 function handleKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage();
-  }
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
 }
 
 function fillPrompt(text) {
@@ -665,37 +290,65 @@ function appendMessage(role, content) {
   const messages = document.getElementById('messages');
   const welcome = document.getElementById('welcome');
   if (welcome) welcome.remove();
-
   const div = document.createElement('div');
   div.className = `msg ${role}`;
-  div.innerHTML = `
-    <div class="msg-role">${role === 'user' ? 'You' : 'Cascade'}</div>
-    <div class="msg-body">${role === 'assistant' ? formatMessage(content) : escapeHtml(content)}</div>
-  `;
+  div.innerHTML = `<div class="msg-role">${role === 'user' ? 'You' : 'Cascade'}</div><div class="msg-body">${role === 'assistant' ? formatMessage(content) : escapeHtml(content)}</div>`;
   messages.appendChild(div);
   messages.scrollTop = messages.scrollHeight;
-  return div;
 }
 
 function showThinking() {
   const messages = document.getElementById('messages');
   const welcome = document.getElementById('welcome');
   if (welcome) welcome.remove();
-
   const div = document.createElement('div');
   div.className = 'msg assistant';
   div.id = 'thinking';
-  div.innerHTML = `
-    <div class="msg-role">Cascade</div>
-    <div class="thinking"><span></span><span></span><span></span></div>
-  `;
+  div.innerHTML = `<div class="msg-role">Cascade</div><div class="thinking"><span></span><span></span><span></span><span class="thinking-label"></span></div>`;
   messages.appendChild(div);
   messages.scrollTop = messages.scrollHeight;
+}
+
+function setThinkingLabel(label) {
+  const el = document.querySelector('#thinking .thinking-label');
+  if (el) el.textContent = label;
 }
 
 function removeThinking() {
   const el = document.getElementById('thinking');
   if (el) el.remove();
+}
+
+async function fetchReadme(api) {
+  if (readmeCache[api]) return readmeCache[api];
+  try {
+    const res = await fetch(README_URLS[api]);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
+    readmeCache[api] = text;
+    return text;
+  } catch (e) {
+    console.warn(`Failed to fetch ${api} readme:`, e);
+    return null;
+  }
+}
+
+async function callCascade(prompt) {
+  const res = await fetch(ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ secret: SECRET, difficulty: DIFFICULTY, prompt })
+  });
+  return res.json();
+}
+
+function finishResponse(data, answeredByEl) {
+  const reply = data.package?.reply || data.package?.response || data.package?.answer || JSON.stringify(data.package);
+  history.push({ role: 'assistant', content: reply });
+  appendMessage('assistant', reply);
+  if (data.answeredBy) {
+    answeredByEl.innerHTML = `answered by <span>${data.answeredBy.provider}:${data.answeredBy.model}</span>`;
+  }
 }
 
 async function sendMessage() {
@@ -705,7 +358,8 @@ async function sendMessage() {
 
   isLoading = true;
   document.getElementById('send-btn').disabled = true;
-  document.getElementById('answered-by').textContent = '';
+  const answeredByEl = document.getElementById('answered-by');
+  answeredByEl.textContent = '';
   input.value = '';
   input.style.height = 'auto';
 
@@ -713,44 +367,34 @@ async function sendMessage() {
   history.push({ role: 'user', content: text });
   showThinking();
 
-  const conversationHistory = history.slice(0, -1)
-    .map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`)
-    .join('\n');
-
-  const fullPrompt = `${SYSTEM_PROMPT}
-
----
-${conversationHistory ? `Conversation so far:\n${conversationHistory}\n` : ''}
-User: ${text}
-
-Respond as the assistant. Return JSON: { "state": "complete", "package": { "reply": "<your response>" } }`;
-
   try {
-    const res = await fetch(ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ secret: SECRET, difficulty: DIFFICULTY, prompt: fullPrompt })
-    });
+    const data = await callCascade(buildPrompt(SHORT_SYSTEM_PROMPT, history, text));
+    const rawStr = JSON.stringify(data);
+    const needDocsApi = detectNeedDocs(data, rawStr);
 
-    const data = await res.json();
-    removeThinking();
+    if (needDocsApi) {
+      setThinkingLabel(`fetching ${needDocsApi} docs...`);
+      const readme = await fetchReadme(needDocsApi);
+      console.log(`[stage2] ${needDocsApi} readme fetched:`, readme ? `${readme.length} chars` : 'FAILED');
+      const data2 = await callCascade(buildPrompt(buildFullSystemPrompt(needDocsApi, readme), history, text));
+      removeThinking();
 
-    if (data.state === 'complete') {
-      const pkg = data.package?.package;
-      const reply = pkg?.reply || pkg?.response || pkg?.answer || JSON.stringify(pkg);
-
-      history.push({ role: 'assistant', content: reply });
-      appendMessage('assistant', reply);
-
-      if (data.answeredBy) {
-        document.getElementById('answered-by').innerHTML =
-          `answered by <span>${data.answeredBy.provider}:${data.answeredBy.model}</span>`;
+      if (data2.state === 'complete') {
+        finishResponse(data2, answeredByEl);
+      } else {
+        appendMessage('assistant', 'All models are currently unavailable. Try again in a moment.');
       }
+
+    } else if (data.state === 'complete') {
+      removeThinking();
+      finishResponse(data, answeredByEl);
     } else {
-      appendMessage('assistant', "All models are currently unavailable. Try again in a moment.");
+      removeThinking();
+      appendMessage('assistant', 'All models are currently unavailable. Try again in a moment.');
     }
 
-  } catch (err) {
+  } catch (e) {
+    console.error('sendMessage error:', e);
     removeThinking();
     appendMessage('assistant', 'Network error — check your connection and try again.');
   }
